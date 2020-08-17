@@ -1,0 +1,11 @@
+CREATE TABLE posts(
+	
+    id int PRIMARY KEY AUTO_INCREMENT,
+    title varchar(50) not null,
+    body text not null,
+    author varchar(50) NOT null,
+    img varchar(50) not null,
+    tags text not null,
+    cat varchar(50) not null,
+    created_at datetime not null
+)

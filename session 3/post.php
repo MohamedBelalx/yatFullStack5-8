@@ -70,26 +70,54 @@
 
                 <!-- Blog Post -->
 
-                <!-- Title -->
-                <h1>Blog Post Title</h1>
+                <?php
 
-                <!-- Author -->
-                <p class="lead">
-                    by <a href="#">Start Bootstrap</a>
-                </p>
+                    include('layout/db.php');
 
-                <hr>
+                    if(isset($_GET['id']))
+                    {
+                        $id = $_GET['id'];
 
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 24, 2013 at 9:00 PM</p>
+                        $sql = "SELECT * FROM posts WHERE id='$id'";
 
-                <hr>
+                        $result = mysqli_query($connection,$sql);
+    
+                        if(mysqli_num_rows($result) > 0)
+                        {
+                            while($rows = mysqli_fetch_assoc($result))
+                            {
+                                $id = $rows['id'];
+                                $img = $rows['img'];
+    
+    
+                                echo "
+                                    <h2>
+                                        <a href='#'>{$rows['title']}</a>
+                                    </h2>
+                                    <p class='lead'>
+                                        by <a href='index.php'>{$rows['author']}</a>
+                                    </p>
+                                    <p><span class='glyphicon glyphicon-time'></span>{$rows['created_at']}</p>
+                                    <hr>
+                                    <img class='img-responsive' src='{$img}' alt=''>
+                                    <hr>
+                                    <p>{$rows['body']}</p>                    
+                                    <hr>
+                                
+                                ";
+    
+                            }
+    
+                        }else
+                        {
+                            echo "<h1>No Posts Yet</h1>";
+                        }
 
-                <!-- Preview Image -->
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
 
-                <hr>
+                    }
 
+                
+                ?>
                 <!-- Post Content -->
                 <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
