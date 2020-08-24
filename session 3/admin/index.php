@@ -20,18 +20,48 @@ if(!isset($_SESSION['id']))
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Blank Page
-                            <small>Subheading</small>
-                        </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-file"></i> Blank Page
-                            </li>
-                        </ol>
+                    <h2>This is All Posts</h2>
+
+                    <table class="table table-striped">
+                        <tr>
+                            <th>#</th>
+                            <th>title</th>
+                            <th>author</th>
+                            <th>delete</th>
+                            <th>update</th>
+                        </tr>
+                        <?php 
+                            
+                            include('../layout/db.php');
+
+                            $sql = "SELECT id,title,author FROM posts";
+
+                            $result = mysqli_query($connection,$sql);
+
+                            if(mysqli_num_rows($result) > 0)
+                            {
+                                while($rows = mysqli_fetch_assoc($result))
+                                {
+
+                                    
+
+                                    echo "<tr>
+                                        <td>{$rows['id']}</td>
+                                        <td>{$rows['title']}</td>
+                                        <td>{$rows['author']}</td>
+                                        <td> <a href='#' class='btn btn-danger'>delete</a> </td>
+                                        <td> <a href='#' class='btn btn-primary'>delete</a></td>
+                                    </tr>";
+
+                                }
+                            }else
+                            {
+                                echo "<h1>No Posts Yet</h1>";
+                            }
+                         
+                         
+                        ?>
+                        </table>
                     </div>
                 </div>
                 <!-- /.row -->
