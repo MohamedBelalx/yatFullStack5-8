@@ -43,13 +43,15 @@ if(!isset($_SESSION['id']))
                                 while($rows = mysqli_fetch_assoc($result))
                                 {
 
+                                    $id = $rows['id'];
+
                                     
 
                                     echo "<tr>
-                                        <td>{$rows['id']}</td>
+                                        <td>{$id}</td>
                                         <td>{$rows['title']}</td>
                                         <td>{$rows['author']}</td>
-                                        <td> <a href='#' class='btn btn-danger'>delete</a> </td>
+                                        <td> <a href='delete.php?id={$id}' class='btn btn-danger'>delete</a> </td>
                                         <td> <a href='#' class='btn btn-primary'>delete</a></td>
                                     </tr>";
 
