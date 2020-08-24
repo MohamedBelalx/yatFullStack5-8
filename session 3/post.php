@@ -39,7 +39,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
+                <a class="navbar-brand" href="index.php">Start Bootstrap</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -119,12 +119,6 @@
                 
                 ?>
                 <!-- Post Content -->
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-
                 <hr>
 
                 <!-- Blog Comments -->
@@ -132,57 +126,71 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <form role="form">
+                    <form action="post.php?id=<?php echo $_GET['id'] ?>" method="POST">
                         <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea name='comment' class="form-control" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button name='send' type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
+
+                <?php
+
+                    if(isset($_POST['send']))
+                    {
+                        $id = $_GET['id'];
+                        $comment = $_POST['comment'];
+
+                        $sql = "INSERT INTO comments(body,post_id) VALUES('$comment','$id')";
+                        if(mysqli_query($connection,$sql))
+                        {
+                            echo "<div class='alert alert-primary'>Insert is ok</div>";
+                        }else
+                        {
+                            echo 'error' . mysqli_error($connection);
+                        }
+
+                    }
+                
+                
+                ?>
 
                 <hr>
 
                 <!-- Posted Comments -->
 
                 <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">Start Bootstrap
-                            <small>August 25, 2014 at 9:30 PM</small>
-                        </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    </div>
-                </div>
+                <?php 
 
-                <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">Start Bootstrap
-                            <small>August 25, 2014 at 9:30 PM</small>
-                        </h4>
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        <!-- Nested Comment -->
-                        <div class="media">
-                            <a class="pull-left" href="#">
-                                <img class="media-object" src="http://placehold.it/64x64" alt="">
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">Nested Start Bootstrap
-                                    <small>August 25, 2014 at 9:30 PM</small>
-                                </h4>
-                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                            </div>
-                        </div>
-                        <!-- End Nested Comment -->
-                    </div>
-                </div>
-
+                    if(isset($_GET['id']))
+                    {
+                        $id = $_GET['id'];
+                        $sql = "SELECT * FROM COMMENTS WHERE post_id=$id";
+                        $result = mysqli_query($connection,$sql);
+                        if(mysqli_num_rows($result) > 0)
+                        {
+                            while($rows = mysqli_fetch_assoc($result))
+                            {
+                                $body = $rows['body'];
+                                echo "<div class='media'>
+                                    <a class='pull-left' href='#'>
+                                        <img class='media-object' src='http://placehold.it/64x64' alt=''>
+                                    </a>
+                                    <div class='media-body'>
+                                        <h4 class='media-heading'>Start Bootstrap
+                                            <small>August 25, 2014 at 9:30 PM</small>
+                                        </h4>
+                                        {$body}
+                                    </div>
+                                </div>";
+                            }
+                        }else
+                        {
+                            echo "<h1>No Comments Yet</h1>";
+                        }
+                    }
+                
+                ?>
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
